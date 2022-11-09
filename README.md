@@ -9,4 +9,11 @@ of decimal places. Keep a limit of how far the program will go.
 
 <img src = "img.png" width = 300 >
 
+* pi
+* k: 0 to infinity
 
+## Libraries used
+```
+from math import factorial
+from decimal import Decimal,getcontext
+```
