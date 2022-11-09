@@ -1,47 +1,85 @@
-
 """Find PI to the Nth Digit - Have the user enter a number 'n' and print out pi to the 'nth' digit,i.e. to the number
-of decimal places. Keep a limit of how far the program will go. """
+of decimal places. Keep a limit of how far the program will go.
 
-from decimal import Decimal, getcontext
-from math import factorial
+Purpose: Get the value of Pi to n number of decimal places
 
-getcontext().prec = 1000 # Sets the precision of digits e.g. `prec = 2`, will return 2 digits
+Module Dependencies:
+- Math provides fast square rooting
+- Decimal gives the Decimal data type (much better than Float)
+- sys needed to set the depth of recursion
 
-#decimal.getcontext().rounding = decimal.ROUND_FLOOR
-#sys.setrecursionlimit(100000)
+ """
 
-pi_digits = input('How many digits of pi would you like?')
-n = int(pi_digits)
+import math, sys
+from decimal import *
+
+getcontext().rounding = ROUND_FLOOR
+sys.setrecursionlimit(10000)
 
 
-def calcPi(n):
+def factorial(n):
     """
-    Prints out the digits of PI until it reaches the given limite
-    :param n:
-    :return:
+    Return the Factorial of a number using recursion.
+    Parameters
+     n: number to get factorial of
     """
-
-    # Assigning t, pi and denom a 0 in decimal format
-    top = Decimal(0)
-    pi = Decimal(0)
-    denom = Decimal(0)
-
-    for k in range(n):
-        top = ((-1)**k)*(factorial(6*k))*(13591409+(545140134*k))
-        denom = factorial(3*k)*(factorial(k)**3)*(640320**(3*k))
-        pi += Decimal(top)/Decimal(denom)
-        pi = pi * Decimal(12)/Decimal(640320**Decimal(1.5))
-        pi = 1/pi
-
-        return round(pi,n)
+    if not n:
+        return 1
+    else:
+        return n * factorial(n - 1)
 
 
+def getIteratedValue(k):
+    """
+    Return the Iterations as given in the Chudnowsky Algorithim.
+    k iterations gives k-1 decimal places; since we need k decimal places make iterations equal to k+1
+    Parameters:
+     k: Number of Decimal Digits to get
+    """
+    k = k + 1
+    # Sets the precision of Digits (e.g. prec = 2 will return 2 digits)
+    getcontext().prec = k
+    sum = 0
+    for k in range(k):
+        first = factorial(6 * k) * (13591409 + 545140134 * k)
+        down = factorial(3 * k) * (factorial(k)) ** 3 * (640320 ** (3 * k))
+        sum += first / down
+    return Decimal(sum)
 
 
+def getValueOfPi(k):
+    """
+    Returns the calculated value of Pi using the iterated value of the loop
+    and some division as given in the Chudnovsky Algorithm
+    Parameters:
+    k -- Number of Decimal Digits up to which the value of Pi should be calculated
+    """
+    iter = getIteratedValue(k)
+    up = 426880 * math.sqrt(10005)
+    pi = Decimal(up) / iter
+
+    return pi
 
 
-print(calcPi(150))
+def shell():
+    """
+	Console Function to create the interactive Shell.
+	Runs only when __name__ == __main__ that is when the script is being called directly
+	No return value and Parameters
+	"""
+    print(
+        "Welcome to Pi Calculator. In the shell below Enter the number of digits unto which the value of Pi should be calculated or enter quit to exit")
 
-#lim = 50
-#print('Reminder: Enter 0 to '+str(1) + ' only. To exit, enter "q" anytime.')
+    while True:
+        print(">>> ", end='')
+        entry = input()
+        if entry == "quit":
+            break
+        if not entry.isdigit():
+            print("You did not enter a number. Try again")
+        else:
+            print(getValueOfPi(int(entry)))
 
+
+if __name__ == '__main__':
+    shell()
