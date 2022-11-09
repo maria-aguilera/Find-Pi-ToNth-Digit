@@ -5,8 +5,5 @@ of decimal places. Keep a limit of how far the program will go.
 ## Problem Overview and Solution Set-Up
 * `round().` only works up to 15 decimal points
 * The Float datatype has a limit on how precise you can get; instead I used a `Decimal` to represent numbers with such precision.
-* Chudnovsky Algorithim is a fast method for calculating the digits of pi, based on Ramanujan's pi formulae.
-
-<img src = "img.png" width = 300 >
 
 

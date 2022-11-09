@@ -6,8 +6,22 @@ of decimal places. Keep a limit of how far the program will go. """
 import math, sys
 import decimal
 
-decimal.getcontext().rounding = decimal.ROUND_FLOOR
-sys.setrecursionlimit(100000)
+from math import factorial
+from decimal import Decimal, getcontext
+getcontext().prec = 1000
+
+#decimal.getcontext().rounding = decimal.ROUND_FLOOR
+#sys.setrecursionlimit(100000)
+
+pi_digits = input('How many digits of pi would you like?')
+n = int(pi_digits)
+
+
+def cal(n):
+    t = Decimal(0)
+    pi = Decimal(0)
+    denom = Decimal(0)
+
 
 
 lim = 50
